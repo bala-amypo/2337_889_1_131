@@ -36,7 +36,7 @@ public class ZoneController {
     return src.ids(id,st);
     }
     @DeleteMapping("/delete/{id}")
-public Zone delData(@PathVariable int id){
+    public Zone delData(@PathVariable int id){
     return src.isd(id);
 }
 }

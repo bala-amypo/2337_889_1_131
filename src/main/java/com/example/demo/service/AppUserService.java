@@ -21,10 +21,10 @@ public class AppUserService {
     public AppUser id(int id) {
         return mp.get(id);
     }
-    public AppUser ids(int id, AppUser st) {
+    public AppUser idsp(int id, AppUser st) {
         return mp.put(id,st);
     }
-    public AppUser isd(int id) {
+    public AppUser isdl(int id) {
         return mp.remove(id);
     }
     
