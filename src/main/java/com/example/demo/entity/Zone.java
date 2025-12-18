@@ -1,13 +1,10 @@
 package com.example.demo.entity;
 
-import jakatra.persistence.Id;
-import jaka
-import java.security.Timestamp;
+import java.time.LocalDate;
 
 public class Zone{
-    @Id
-    private Long id;
-    @Column(unique=true)
+    
+    private Integer id;
     private String zonename;
     private Integer priorityLevel;
     private Integer population;
@@ -15,10 +12,10 @@ public class Zone{
     private LocalDate createdAt;
     private LocalDate updateAt;
     
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     public String getZonename() {
@@ -45,20 +42,20 @@ public class Zone{
     public void setActive(Boolean active) {
         this.active = active;
     }
-    public Timestamp getCreatedAt() {
+    public LocalDate getCreatedAt() {
         return createdAt;
     }
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(LocalDate createdAt) {
         this.createdAt = createdAt;
     }
-    public Timestamp getUpdateAt() {
+    public LocalDate getUpdateAt() {
         return updateAt;
     }
-    public void setUpdateAt(Timestamp updateAt) {
+    public void setUpdateAt(LocalDate updateAt) {
         this.updateAt = updateAt;
     }
-    public Zone(Long id, String zonename, Integer priorityLevel, Integer population, Boolean active,
-            Timestamp createdAt, Timestamp updateAt) {
+    public Zone(Integer id, String zonename, Integer priorityLevel, Integer population, Boolean active,
+            LocalDate createdAt, LocalDate updateAt) {
         this.id = id;
         this.zonename = zonename;
         this.priorityLevel = priorityLevel;

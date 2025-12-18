@@ -4,27 +4,27 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.example.demo.entity.ZoneEntity;
+import com.example.demo.entity.;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ZoneService {
-    Map<Integer,ZoneEntity> mp = new HashMap<>();
+    Map<Integer,Zone> mp = new HashMap<>();
 
-    public ZoneEntity savedata(ZoneEntity st){
+    public Zone savedata(Zone st){
         mp.put(st.getId(),st);
         return  st;
     }
-    public List<ZoneEntity>retdata(){
+    public List<Zone>retdata(){
         return new ArrayList<>(mp.values());
     }
-    public ZoneEntity id(int id) {
+    public Zone id(int id) {
         return mp.get(id);
     }
-    public ZoneEntity ids(int id, ZoneEntity st) {
+    public Zone ids(int id, Zone st) {
         return mp.put(id,st);
     }
-    public ZoneEntity isd(int id) {
+    public Zone isd(int id) {
         return mp.remove(id);
     }
 }
