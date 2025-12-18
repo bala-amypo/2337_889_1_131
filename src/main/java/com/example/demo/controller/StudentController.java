@@ -11,32 +11,32 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.entity.StudentEntity;
-import com.example.demo.service.StudentService;
+import com.example.demo.entity.ZoneEntity;
+import com.example.demo.service.ZoneService;
 
 @RestController
-public class StudentController {
+public class ZoneController {
     @Autowired
-    StudentService src;
+    ZoneService src;
     @PostMapping("/post")
-    public StudentEntity postdata(@RequestBody StudentEntity st){
+    public ZoneEntity postdata(@RequestBody ZoneEntity st){
     return src.savedata(st);
 
     }
     @GetMapping("/Get")
-    public List<StudentEntity>getdata(){
+    public List<ZoneEntity>getdata(){
         return src.retdata();
     }
     @GetMapping("/Getid/{id}")
-    public StudentEntity getIdval(@PathVariable int id){
+    public ZoneEntity getIdval(@PathVariable int id){
         return src.id(id);
     }
     @PutMapping("/update/{id}")
-    public StudentEntity funName (@PathVariable int id,@RequestBody StudentEntity st){
+    public ZoneEntity funName (@PathVariable int id,@RequestBody ZoneEntity st){
     return src.ids(id,st);
 }
 @DeleteMapping("/delete/{id}")
-public StudentEntity delData(@PathVariable int id){
+public ZoneEntity delData(@PathVariable int id){
     return src.isd(id);
 }
 }
