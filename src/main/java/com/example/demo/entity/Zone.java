@@ -3,7 +3,9 @@ package com.example.demo.entity;
 import java.security.Timestamp;
 
 public class Zone{
+    @Id
     private Long id;
+    @Column(unique=true)
     private String zonename;
     private Integer priorityLevel;
     private Integer population;
