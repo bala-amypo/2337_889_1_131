@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.AppUser;
-import com.example.demo.entity.Zone;
-import com.example.demo.service.ZoneService;
+import com.example.demo.service.AppUserService;
 
 @RestController
 public class AppUserController {
@@ -22,7 +21,6 @@ public class AppUserController {
     @PostMapping("/post")
     public Zone postdata(@RequestBody AppUser st){
     return src.savedata(st);
-
     }
     @GetMapping("/Get")
     public List<Zone> getdata(){
@@ -33,12 +31,11 @@ public class AppUserController {
         return src.id(id);
     }
     @PutMapping("/update/{id}")
-public AppUser funName(@PathVariable int id, @RequestBody AppUser st) {
+    public AppUser funName(@PathVariable int id, @RequestBody AppUser st) {
     return src.idsp(id, st);
-}
-
-@DeleteMapping("/delete/{id}")
-public AppUser delData(@PathVariable int id) {
+    }
+    @DeleteMapping("/delete/{id}")
+    public AppUser delData(@PathVariable int id) {
     return src.isdl(id);
 }
 
