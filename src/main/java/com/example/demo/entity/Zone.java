@@ -1,5 +1,7 @@
 package com.example.demo.entity;
 
+import jakatra.persistence.Id;
+import jaka
 import java.security.Timestamp;
 
 public class Zone{
