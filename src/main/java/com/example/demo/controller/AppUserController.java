@@ -19,15 +19,15 @@ public class AppUserController {
     @Autowired
     ZoneService src;
     @PostMapping("/post")
-    public Zone postdata(@RequestBody AppUser st){
+    public AppUser postdata(@RequestBody AppUser st){
     return src.savedata(st);
     }
     @GetMapping("/Get")
-    public List<Zone> getdata(){
+    public List<AppUser> getdata(){
         return src.retdata();
     }
     @GetMapping("/Getid/{id}")
-    public Zone getIdval(@PathVariable int id){
+    public AppUser getIdval(@PathVariable int id){
         return src.id(id);
     }
     @PutMapping("/update/{id}")
