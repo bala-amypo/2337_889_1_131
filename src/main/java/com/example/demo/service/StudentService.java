@@ -4,27 +4,27 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.example.demo.entity.Studententity;
+import com.example.demo.entity.StudentEntity;
 import org.springframework.stereotype.Service;
 
 @Service
-public class Studentservice {
-    Map<Integer,Studententity> mp = new HashMap<>();
+public class StudentService {
+    Map<Integer,StudentEntity> mp = new HashMap<>();
 
-    public Studententity savedata(Studententity st){
+    public StudentEntity savedata(StudentEntity st){
         mp.put(st.getId(),st);
         return  st;
     }
-    public List<Studententity>retdata(){
+    public List<StudentEntity>retdata(){
         return new ArrayList<>(mp.values());
     }
-    public Studententity id(int id) {
+    public StudentEntity id(int id) {
         return mp.get(id);
     }
-    public Studententity ids(int id, Studententity st) {
+    public StudentEntity ids(int id, StudentEntity st) {
         return mp.put(id,st);
     }
-    public Studententity isd(int id) {
+    public StudentEntity isd(int id) {
         return mp.remove(id);
     }
 }
