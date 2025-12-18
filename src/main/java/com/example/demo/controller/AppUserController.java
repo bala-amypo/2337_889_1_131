@@ -15,6 +15,7 @@ import com.example.demo.entity.AppUser;
 import com.example.demo.service.AppUserService;
 
 @RestController
+@Rest
 public class AppUserController {
     @Autowired
     AppUserService src;
