@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.entity.ZoneEntity;
+import com.example.demo.entity.Zone;
 import com.example.demo.service.ZoneService;
 
 @RestController
@@ -19,24 +19,24 @@ public class ZoneController {
     @Autowired
     ZoneService src;
     @PostMapping("/post")
-    public ZoneEntity postdata(@RequestBody ZoneEntity st){
+    public Zone postdata(@RequestBody Zone st){
     return src.savedata(st);
 
     }
     @GetMapping("/Get")
-    public List<ZoneEntity>getdata(){
+    public List<Zone>getdata(){
         return src.retdata();
     }
     @GetMapping("/Getid/{id}")
-    public ZoneEntity getIdval(@PathVariable int id){
+    public Zone getIdval(@PathVariable int id){
         return src.id(id);
     }
     @PutMapping("/update/{id}")
-    public ZoneEntity funName (@PathVariable int id,@RequestBody ZoneEntity st){
+    public Zone funName (@PathVariable int id,@RequestBody Zone st){
     return src.ids(id,st);
 }
 @DeleteMapping("/delete/{id}")
-public ZoneEntity delData(@PathVariable int id){
+public Zone delData(@PathVariable int id){
     return src.isd(id);
 }
 }
