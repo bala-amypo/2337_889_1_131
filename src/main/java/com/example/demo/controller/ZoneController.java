@@ -15,6 +15,7 @@ import com.example.demo.entity.Zone;
 import com.example.demo.service.ZoneService;
 
 @RestController
+@RestMapping("/zone")
 public class ZoneController {
     @Autowired
     ZoneService src;
