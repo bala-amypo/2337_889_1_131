@@ -10,8 +10,8 @@ public class Zone{
     private Integer priorityLevel;
     private Integer population;
     private Boolean active;
-    private Timestamp createdAt;
-    private Timestamp updateAt;
+    private LocalDate createdAt;
+    private LocalDate updateAt;
     
     public Long getId() {
         return id;
