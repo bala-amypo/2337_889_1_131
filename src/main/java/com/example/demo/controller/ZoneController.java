@@ -34,8 +34,8 @@ public class ZoneController {
     @PutMapping("/update/{id}")
     public Zone funName (@PathVariable int id,@RequestBody Zone st){
     return src.ids(id,st);
-}
-@DeleteMapping("/delete/{id}")
+    }
+    @DeleteMapping("/delete/{id}")
 public Zone delData(@PathVariable int id){
     return src.isd(id);
 }

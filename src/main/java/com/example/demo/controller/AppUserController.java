@@ -17,7 +17,7 @@ import com.example.demo.service.AppUserService;
 @RestController
 public class AppUserController {
     @Autowired
-    ZoneService src;
+    AppUserService src;
     @PostMapping("/post")
     public AppUser postdata(@RequestBody AppUser st){
     return src.savedata(st);
