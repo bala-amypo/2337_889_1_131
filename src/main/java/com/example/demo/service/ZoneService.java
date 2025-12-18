@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.example.demo.entity.;
+import com.example.demo.entity.Zone;
 import org.springframework.stereotype.Service;
 
 @Service
