@@ -1,69 +1,115 @@
 package com.example.demo.entity;
 
-import java.time.LocalDate;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import java.sql.Timestamp;
 
-public class Zone{
-    
-    private Integer id;
-    private String zonename;
+@Entity
+@Table(
+    name = "zone",
+    uniqueConstraints = @UniqueConstraint(columnNames = "zoneName")
+)
+public class Zone {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, unique = true)
+    private String zoneName;
+
+    @Min(value = 1, message = "priorityLevel must be >= 1")
+    @Column(nullable = false)
     private Integer priorityLevel;
+
     private Integer population;
-    private Boolean active;
-    private LocalDate createdAt;
-    private LocalDate updateAt;
-    
-    public Integer getId() {
+
+    @Column(nullable = false)
+    private Boolean active = true;   // default true
+
+    @Column(updatable = false)
+    private Timestamp createdAt;
+
+    private Timestamp updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = new Timestamp(System.currentTimeMillis());
+        updatedAt = createdAt;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = new Timestamp(System.currentTimeMillis());
+    }
+
+    public Long getId() {
         return id;
     }
-    public void setId(Integer id) {
+
+    public void setId(Long id) {
         this.id = id;
     }
-    public String getZonename() {
-        return zonename;
+
+    public String getZoneName() {
+        return zoneName;
     }
-    public void setZonename(String zonename) {
-        this.zonename = zonename;
+
+    public void setZoneName(String zoneName) {
+        this.zoneName = zoneName;
     }
+
     public Integer getPriorityLevel() {
         return priorityLevel;
     }
+
     public void setPriorityLevel(Integer priorityLevel) {
         this.priorityLevel = priorityLevel;
     }
+
     public Integer getPopulation() {
         return population;
     }
+
     public void setPopulation(Integer population) {
         this.population = population;
     }
+
     public Boolean getActive() {
         return active;
     }
+
     public void setActive(Boolean active) {
         this.active = active;
     }
-    public LocalDate getCreatedAt() {
+
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
-    public void setCreatedAt(LocalDate createdAt) {
+
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
-    public LocalDate getUpdateAt() {
-        return updateAt;
+
+    public Timestamp getUpdatedAt() {
+        return updatedAt;
     }
-    public void setUpdateAt(LocalDate updateAt) {
-        this.updateAt = updateAt;
+
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
     }
-    public Zone(Integer id, String zonename, Integer priorityLevel, Integer population, Boolean active,
-            LocalDate createdAt, LocalDate updateAt) {
+
+    public Zone(Long id, String zoneName, @Min(value = 1, message = "priorityLevel must be >= 1") Integer priorityLevel,
+            Integer population, Boolean active, Timestamp createdAt, Timestamp updatedAt) {
         this.id = id;
-        this.zonename = zonename;
+        this.zoneName = zoneName;
         this.priorityLevel = priorityLevel;
         this.population = population;
         this.active = active;
         this.createdAt = createdAt;
-        this.updateAt = updateAt;
-    } 
+        this.updatedAt = updatedAt;
+    }
 
-    
+
+
 }
