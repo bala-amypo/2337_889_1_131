@@ -1,46 +1,35 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
-import java.sql.Timestamp;
+import java.time.Instant;
 
-@Entity
-@Table(
-    name = "zone",
-    uniqueConstraints = @UniqueConstraint(columnNames = "zoneName")
-)
 public class Zone {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true, nullable = false)
     private String zoneName;
 
-    @Min(value = 1, message = "priorityLevel must be >= 1")
     @Column(nullable = false)
     private Integer priorityLevel;
 
     private Integer population;
 
-    @Column(nullable = false)
-    private Boolean active = true;   // default true
+    private Boolean active = true;
 
-    @Column(updatable = false)
-    private Timestamp createdAt;
-
-    private Timestamp updatedAt;
+    private Instant createdAt;
+    private Instant updatedAt;
 
     @PrePersist
     protected void onCreate() {
-        createdAt = new Timestamp(System.currentTimeMillis());
-        updatedAt = createdAt;
+        createdAt = Instant.now();
+        updatedAt = Instant.now();
     }
 
     @PreUpdate
     protected void onUpdate() {
-        updatedAt = new Timestamp(System.currentTimeMillis());
+        updatedAt = Instant.now();
     }
 
     public Long getId() {
@@ -83,24 +72,24 @@ public class Zone {
         this.active = active;
     }
 
-    public Timestamp getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Timestamp getUpdatedAt() {
+    public Instant getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Timestamp updatedAt) {
+    public void setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    public Zone(Long id, String zoneName, @Min(value = 1, message = "priorityLevel must be >= 1") Integer priorityLevel,
-            Integer population, Boolean active, Timestamp createdAt, Timestamp updatedAt) {
+    public Zone(Long id, String zoneName, Integer priorityLevel, Integer population, Boolean active, Instant createdAt,
+            Instant updatedAt) {
         this.id = id;
         this.zoneName = zoneName;
         this.priorityLevel = priorityLevel;
@@ -109,7 +98,6 @@ public class Zone {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
-
 
 
 }
