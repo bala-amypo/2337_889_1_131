@@ -5,7 +5,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthRequest { ... }
+public class AuthRequest {  }
 public class ZoneDTO {
     private Long id;
     private String zoneName;

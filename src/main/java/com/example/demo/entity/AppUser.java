@@ -7,7 +7,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthRequest { ... }
+public class AuthRequest {  }
 
 public class AppUser {
     @Id
