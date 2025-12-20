@@ -20,7 +20,34 @@ public class Zone {
 
     private Instant createdAt;
     private Instant updatedAt;
+package com.example.demo.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name = "zones")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Zone {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    private String zoneName;
+    private Integer priorityLevel;
+    private Integer population;
+    private Boolean active;
+}
     @PrePersist
     protected void onCreate() {
         createdAt = Instant.now();
