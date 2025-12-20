@@ -1,8 +1,15 @@
 package com.example.demo.dto;
 
-public class AuthResponse {
-    private String token;
-    private Long userId;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data // Fixes getEmail() and getPassword()
+@Builder // Fixes builder()
+@NoArgsConstructor
+@AllArgsConstructor
+public class AuthRequest {
     private String email;
-    private String role;
+    private String password;
 }
