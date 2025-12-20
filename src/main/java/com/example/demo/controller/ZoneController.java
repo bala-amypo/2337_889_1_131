@@ -1,43 +1,45 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.example.demo.entity.Zone;
 import com.example.demo.service.ZoneService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RestMapping("/zone")
+@RequestMapping("/api/zones")
 public class ZoneController {
-    @Autowired
-    ZoneService src;
-    @PostMapping("/post")
-    public Zone postdata(@RequestBody Zone st){
-    return src.savedata(st);
 
+    private final ZoneService zoneService;
+
+    public ZoneController(ZoneService zoneService) {
+        this.zoneService = zoneService;
     }
-    @GetMapping("/Get")
-    public List<Zone>getdata(){
-        return src.retdata();
+
+    @PostMapping("/")
+    public ResponseEntity<Zone> createZone(@RequestBody Zone zone) {
+        return ResponseEntity.ok(zoneService.createZone(zone));
     }
-    @GetMapping("/Getid/{id}")
-    public Zone getIdval(@PathVariable int id){
-        return src.id(id);
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Zone> updateZone(@PathVariable Long id, @RequestBody Zone zone) {
+        return ResponseEntity.ok(zoneService.updateZone(id, zone));
     }
-    @PutMapping("/update/{id}")
-    public Zone funName (@PathVariable int id,@RequestBody Zone st){
-    return src.ids(id,st);
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Zone> getZone(@PathVariable Long id) {
+        return ResponseEntity.ok(zoneService.getZoneById(id));
     }
-    @DeleteMapping("/delete/{id}")
-    public Zone delData(@PathVariable int id){
-    return src.isd(id);
-}
+
+    @GetMapping("/")
+    public ResponseEntity<List<Zone>> getAllZones() {
+        return ResponseEntity.ok(zoneService.getAllZones());
+    }
+
+    @PutMapping("/{id}/deactivate")
+    public ResponseEntity<Void> deactivateZone(@PathVariable Long id) {
+        zoneService.deactivateZone(id);
+        return ResponseEntity.noContent().build();
+    }
 }
