@@ -1,19 +1,15 @@
-package com.example.demo.entity;
+package com.example.demo.dto;
 
-import lombok.*;
-import javax.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Entity
-@Data
+@Data // Fixes getEmail() and getPassword()
 @Builder // Fixes builder()
 @NoArgsConstructor
 @AllArgsConstructor
-public class AppUser {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class AuthRequest {
     private String email;
     private String password;
-    private String role;
-    private boolean active;
 }

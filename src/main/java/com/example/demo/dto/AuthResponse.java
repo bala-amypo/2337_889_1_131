@@ -5,11 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data // Fixes getEmail() and getPassword()
-@Builder // Fixes builder()
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthRequest {
+@Builder // This is the annotation your error log is looking for!
+public class AuthResponse {
+    private String token;
+    private Long userId;
     private String email;
-    private String password;
+    private String role;
 }
