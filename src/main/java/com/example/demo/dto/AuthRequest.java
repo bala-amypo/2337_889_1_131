@@ -5,8 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data // Fixes getEmail() and getPassword()
-@Builder // Fixes builder()
+@Data
+@Builder 
 @NoArgsConstructor
 @AllArgsConstructor
 public class AuthRequest {
