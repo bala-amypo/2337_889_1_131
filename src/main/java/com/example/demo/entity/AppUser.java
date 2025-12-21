@@ -7,9 +7,7 @@ import lombok.*;
 @Getter
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-
 
 public class AppUser {
     @Id
