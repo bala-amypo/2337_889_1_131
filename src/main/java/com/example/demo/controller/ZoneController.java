@@ -1,54 +1,43 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Zone;
+import com.example.demo.dto.ZoneDTO;
 import com.example.demo.service.ZoneService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/zones")
 public class ZoneController {
 
-    private final ZoneService zoneService;
-
-    public ZoneController(ZoneService zoneService) {
-        this.zoneService = zoneService;
-    }
-
-    @PostMapping("/")
-    public ResponseEntity<Zone> createZone(@RequestBody Zone zone) {
-        return ResponseEntity.ok(zoneService.createZone(zone));
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Zone> updateZone(@PathVariable Long id, @RequestBody Zone zone) {
-        return ResponseEntity.ok(zoneService.updateZone(id, zone));
-    }
+    @Autowired
+    private ZoneService zoneService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Zone> getZone(@PathVariable Long id) {
-        return ResponseEntity.ok(zoneService.getZoneById(id));
+    public ResponseEntity<ZoneDTO> getZoneById(@PathVariable Long id) {
+        Zone zone = zoneService.getZoneById(id);
+        return ResponseEntity.ok(convertToDTO(zone));
     }
 
-    @GetMapping("/")
-    public ResponseEntity<List<Zone>> getAllZones() {
-        return ResponseEntity.ok(zoneService.getAllZones());
+    @GetMapping
+    public ResponseEntity<List<ZoneDTO>> getAllZones() {
+        List<ZoneDTO> dtos = zoneService.getAllZones().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(dtos);
     }
 
-    @PutMapping("/{id}/deactivate")
-    public ResponseEntity<Void> deactivateZone(@PathVariable Long id) {
-        zoneService.deactivateZone(id);
-        return ResponseEntity.noContent().build();
+    // This helper method solves the "cannot be converted" error
+    private ZoneDTO convertToDTO(Zone zone) {
+        return ZoneDTO.builder()
+                .id(zone.getId())
+                .name(zone.getName())
+                .population(zone.getPopulation())
+                .active(zone.isActive())
+                .build();
     }
-    @GetMapping("/{id}")
-public ZoneDTO getZone(@PathVariable Long id) {
-    Zone zone = zoneService.getZoneById(id);
-    return ZoneDTO.builder()
-            .id(zone.getId())
-            .name(zone.getName())
-            .population(zone.getPopulation())
-            .build();
-}
 }
