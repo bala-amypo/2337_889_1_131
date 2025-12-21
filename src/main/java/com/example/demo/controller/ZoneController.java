@@ -42,4 +42,13 @@ public class ZoneController {
         zoneService.deactivateZone(id);
         return ResponseEntity.noContent().build();
     }
+    @GetMapping("/{id}")
+public ZoneDTO getZone(@PathVariable Long id) {
+    Zone zone = zoneService.getZoneById(id);
+    return ZoneDTO.builder()
+            .id(zone.getId())
+            .name(zone.getName())
+            .population(zone.getPopulation())
+            .build();
+}
 }
