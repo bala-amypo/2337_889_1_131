@@ -10,20 +10,22 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-
+    
     private final AppUserService appUserService;
-
+    
     public AuthController(AppUserService appUserService) {
         this.appUserService = appUserService;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AppUser> register(@RequestBody AppUser user) {
-        return ResponseEntity.ok(appUserService.register(user.getEmail(), user.getPassword(), user.getRole()));
+    public ResponseEntity<AppUser> register(@RequestBody AuthRequest request) {
+        AppUser user = appUserService.register(request.getEmail(), request.getPassword(), "USER");
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest authRequest) {
-        return ResponseEntity.ok(appUserService.login(authRequest.getEmail(), authRequest.getPassword()));
+    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
+        AuthResponse response = appUserService.login(request.getEmail(), request.getPassword());
+        return ResponseEntity.ok(response);
     }
 }
