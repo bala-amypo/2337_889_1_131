@@ -11,50 +11,66 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AppUserServiceImpl implements AppUserService {
-
-    private final AppUserRepository userRepository;
+    
+    private final AppUserRepository appUserRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
-
-    public AppUserServiceImpl(AppUserRepository userRepository, 
-                              PasswordEncoder passwordEncoder, 
+    
+    public AppUserServiceImpl(AppUserRepository appUserRepository, 
+                              PasswordEncoder passwordEncoder,
                               JwtTokenProvider jwtTokenProvider) {
-        this.userRepository = userRepository;
+        this.appUserRepository = appUserRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @Override
     public AppUser register(String email, String password, String role) {
-        // Enforce uniqueness check required by spec
-        if (userRepository.findByEmail(email).isPresent()) {
+        if (email == null || email.trim().isEmpty()) {
+            throw new BadRequestException("Email cannot be null or empty");
+        }
+        if (password == null || password.trim().isEmpty()) {
+            throw new BadRequestException("Password cannot be null or empty");
+        }
+        if (role == null || role.trim().isEmpty()) {
+            throw new BadRequestException("Role cannot be null or empty");
+        }
+        
+        if (appUserRepository.findByEmail(email).isPresent()) {
             throw new BadRequestException("Email must be unique");
         }
-
-        AppUser newUser = AppUser.builder()
-                .email(email)
-                // Passwords must be stored encrypted
+        
+        AppUser user = AppUser.builder()
+                .email(email.trim())
                 .password(passwordEncoder.encode(password))
-                .role(role)
+                .role(role.trim())
                 .active(true)
                 .build();
-
-        return userRepository.save(newUser);
+        
+        return appUserRepository.save(user);
     }
 
     @Override
     public AuthResponse login(String email, String password) {
-        AppUser user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new BadRequestException("Invalid email or password"));
-
-        // Verify credentials
-        if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new BadRequestException("Invalid email or password");
+        if (email == null || email.trim().isEmpty()) {
+            throw new BadRequestException("Email cannot be null or empty");
         }
-
-        // Generate JWT token containing claims (userId, email, role)
+        if (password == null || password.trim().isEmpty()) {
+            throw new BadRequestException("Password cannot be null or empty");
+        }
+        
+        AppUser user = appUserRepository.findByEmail(email.trim())
+                .orElseThrow(() -> new BadRequestException("Invalid credentials"));
+        
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new BadRequestException("Invalid credentials");
+        }
+        
         String token = jwtTokenProvider.createToken(user);
-
+        if (token == null || token.trim().isEmpty()) {
+            throw new RuntimeException("Failed to generate token");
+        }
+        
         return AuthResponse.builder()
                 .token(token)
                 .userId(user.getId())
