@@ -1,4 +1,18 @@
-Zone zone = zoneService.getZoneById(id);
-ZoneDTO dto = new ZoneDTO(zone.getId(), zone.getName(),
-                          zone.getPriorityLevel(), zone.isActive());
-return ResponseEntity.ok(dto);
+package com.example.demo.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class ZoneDTO {
+    private Long id;
+    private String name;
+    private String description;
+    private Boolean active;
+    private Integer priorityLevel;
+}
