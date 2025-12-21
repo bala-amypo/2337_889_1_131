@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ZoneDTO {
     private Long id;
-    private String name;
+    private String zoneName;
     private String description;
     private Boolean active;
     private Integer priorityLevel;
