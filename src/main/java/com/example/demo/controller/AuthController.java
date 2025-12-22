@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestM~apping("/auth")
+@RequestMapping("/auth")
 public class AuthController {
     
     private final AppUserService appUserService;
