@@ -13,7 +13,7 @@ public class Zone {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false)bn9l
     private String zoneName;
 
     @Column(nullable = false)
