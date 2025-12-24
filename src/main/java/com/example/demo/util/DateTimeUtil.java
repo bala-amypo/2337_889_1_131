@@ -1,13 +1,13 @@
-package com.example.demo.util;
+package com.example.demo.service;
 
-import java.time.Instant;
+import com.example.demo.entity.Zone;
 
-public class DateTimeUtil {
-    public static Instant now() {
-        return Instant.now();
-    }
-    
-    public static boolean isFuture(Instant instant) {
-        return instant.isAfter(Instant.now());
-    }
+import java.util.List;
+
+public interface ZoneService {
+    Zone createZone(Zone zone);
+    Zone updateZone(Long id, Zone zone);
+    Zone getZoneById(Long id);
+    List<Zone> getAllZones();
+    void deactivateZone(Long id);
 }
