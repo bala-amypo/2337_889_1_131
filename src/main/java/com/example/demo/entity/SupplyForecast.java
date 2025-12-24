@@ -40,9 +40,15 @@ public class SupplyForecast {
     }
 
     public static class SupplyForecastBuilder {
+        private Long id;
         private Double availableSupplyMW;
         private Instant forecastStart;
         private Instant forecastEnd;
+
+        public SupplyForecastBuilder id(Long id) {
+            this.id = id;
+            return this;
+        }
 
         public SupplyForecastBuilder availableSupplyMW(Double availableSupplyMW) {
             this.availableSupplyMW = availableSupplyMW;
@@ -60,7 +66,9 @@ public class SupplyForecast {
         }
 
         public SupplyForecast build() {
-            return new SupplyForecast(availableSupplyMW, forecastStart, forecastEnd);
+            SupplyForecast forecast = new SupplyForecast(availableSupplyMW, forecastStart, forecastEnd);
+            forecast.setId(id);
+            return forecast;
         }
     }
 

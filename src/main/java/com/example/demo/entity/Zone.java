@@ -44,10 +44,16 @@ public class Zone {
     }
 
     public static class ZoneBuilder {
+        private Long id;
         private String zoneName;
         private Integer priorityLevel;
         private Integer population;
         private Boolean active = true;
+
+        public ZoneBuilder id(Long id) {
+            this.id = id;
+            return this;
+        }
 
         public ZoneBuilder zoneName(String zoneName) {
             this.zoneName = zoneName;
@@ -70,7 +76,9 @@ public class Zone {
         }
 
         public Zone build() {
-            return new Zone(zoneName, priorityLevel, population, active);
+            Zone zone = new Zone(zoneName, priorityLevel, population, active);
+            zone.setId(id);
+            return zone;
         }
     }
 
