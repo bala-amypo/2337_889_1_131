@@ -94,6 +94,16 @@
 	</dependencies>
 
 	<build>
+    <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-surefire-plugin</artifactId>
+    <version>3.x.x</version>
+    <configuration>
+        <suiteXmlFiles>
+            <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
+        </suiteXmlFiles>
+    </configuration>
+</plugin>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
