@@ -42,12 +42,18 @@ public class LoadSheddingEvent {
     }
 
     public static class LoadSheddingEventBuilder {
+        private Long id;
         private Zone zone;
         private Instant eventStart;
         private Instant eventEnd;
         private String reason;
         private Long triggeredByForecastId;
         private Double expectedDemandReductionMW;
+
+        public LoadSheddingEventBuilder id(Long id) {
+            this.id = id;
+            return this;
+        }
 
         public LoadSheddingEventBuilder zone(Zone zone) {
             this.zone = zone;
@@ -81,6 +87,7 @@ public class LoadSheddingEvent {
 
         public LoadSheddingEvent build() {
             LoadSheddingEvent event = new LoadSheddingEvent(zone, eventStart, reason, triggeredByForecastId, expectedDemandReductionMW);
+            event.setId(id);
             event.setEventEnd(eventEnd);
             return event;
         }

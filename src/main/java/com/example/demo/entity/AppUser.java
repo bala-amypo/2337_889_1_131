@@ -35,10 +35,16 @@ public class AppUser {
     }
 
     public static class AppUserBuilder {
+        private Long id;
         private String email;
         private String password;
         private String role;
         private Boolean active = true;
+
+        public AppUserBuilder id(Long id) {
+            this.id = id;
+            return this;
+        }
 
         public AppUserBuilder email(String email) {
             this.email = email;
@@ -61,7 +67,9 @@ public class AppUser {
         }
 
         public AppUser build() {
-            return new AppUser(email, password, role, active);
+            AppUser user = new AppUser(email, password, role, active);
+            user.setId(id);
+            return user;
         }
     }
 

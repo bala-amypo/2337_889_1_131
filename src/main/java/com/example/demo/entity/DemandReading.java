@@ -34,9 +34,15 @@ public class DemandReading {
     }
 
     public static class DemandReadingBuilder {
+        private Long id;
         private Zone zone;
         private Double demandMW;
         private Instant recordedAt;
+
+        public DemandReadingBuilder id(Long id) {
+            this.id = id;
+            return this;
+        }
 
         public DemandReadingBuilder zone(Zone zone) {
             this.zone = zone;
@@ -54,7 +60,9 @@ public class DemandReading {
         }
 
         public DemandReading build() {
-            return new DemandReading(zone, demandMW, recordedAt);
+            DemandReading reading = new DemandReading(zone, demandMW, recordedAt);
+            reading.setId(id);
+            return reading;
         }
     }
 
