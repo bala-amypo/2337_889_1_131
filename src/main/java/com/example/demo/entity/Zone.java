@@ -1,85 +1,97 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
 
 @Entity
-@Table(name = "zone_restoration_records")
-public class ZoneRestorationRecord {
+@Table(name = "zones")
+public class Zone {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "zone_id", nullable = false)
-    private Zone zone;
+    @Column(unique = true, nullable = false)
+    private String zoneName;
 
     @Column(nullable = false)
-    private Instant restoredAt;
+    private Integer priorityLevel;
+
+    private Integer population;
 
     @Column(nullable = false)
-    private Long eventId;
+    private Boolean active = true;
 
-    private String notes;
+    @CreationTimestamp
+    private Instant createdAt;
 
-    public ZoneRestorationRecord() {}
+    @UpdateTimestamp
+    private Instant updatedAt;
 
-    public ZoneRestorationRecord(Zone zone, Instant restoredAt, Long eventId, String notes) {
-        this.zone = zone;
-        this.restoredAt = restoredAt;
-        this.eventId = eventId;
-        this.notes = notes;
+    public Zone() {}
+
+    public Zone(String zoneName, Integer priorityLevel, Integer population, Boolean active) {
+        this.zoneName = zoneName;
+        this.priorityLevel = priorityLevel;
+        this.population = population;
+        this.active = active != null ? active : true;
     }
 
-    public static ZoneRestorationRecordBuilder builder() {
-        return new ZoneRestorationRecordBuilder();
+    public static ZoneBuilder builder() {
+        return new ZoneBuilder();
     }
 
-    public static class ZoneRestorationRecordBuilder {
-        private Zone zone;
-        private Instant restoredAt;
-        private Long eventId;
-        private String notes;
+    public static class ZoneBuilder {
+        private String zoneName;
+        private Integer priorityLevel;
+        private Integer population;
+        private Boolean active = true;
 
-        public ZoneRestorationRecordBuilder zone(Zone zone) {
-            this.zone = zone;
+        public ZoneBuilder zoneName(String zoneName) {
+            this.zoneName = zoneName;
             return this;
         }
 
-        public ZoneRestorationRecordBuilder restoredAt(Instant restoredAt) {
-            this.restoredAt = restoredAt;
+        public ZoneBuilder priorityLevel(Integer priorityLevel) {
+            this.priorityLevel = priorityLevel;
             return this;
         }
 
-        public ZoneRestorationRecordBuilder eventId(Long eventId) {
-            this.eventId = eventId;
+        public ZoneBuilder population(Integer population) {
+            this.population = population;
             return this;
         }
 
-        public ZoneRestorationRecordBuilder notes(String notes) {
-            this.notes = notes;
+        public ZoneBuilder active(Boolean active) {
+            this.active = active;
             return this;
         }
 
-        public ZoneRestorationRecord build() {
-            return new ZoneRestorationRecord(zone, restoredAt, eventId, notes);
+        public Zone build() {
+            return new Zone(zoneName, priorityLevel, population, active);
         }
     }
 
-    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public Zone getZone() { return zone; }
-    public void setZone(Zone zone) { this.zone = zone; }
+    public String getZoneName() { return zoneName; }
+    public void setZoneName(String zoneName) { this.zoneName = zoneName; }
 
-    public Instant getRestoredAt() { return restoredAt; }
-    public void setRestoredAt(Instant restoredAt) { this.restoredAt = restoredAt; }
+    public Integer getPriorityLevel() { return priorityLevel; }
+    public void setPriorityLevel(Integer priorityLevel) { this.priorityLevel = priorityLevel; }
 
-    public Long getEventId() { return eventId; }
-    public void setEventId(Long eventId) { this.eventId = eventId; }
+    public Integer getPopulation() { return population; }
+    public void setPopulation(Integer population) { this.population = population; }
 
-    public String getNotes() { return notes; }
-    public void setNotes(String notes) { this.notes = notes; }
+    public Boolean getActive() { return active; }
+    public void setActive(Boolean active) { this.active = active; }
+
+    public Instant getCreatedAt() { return createdAt; }
+    public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
+
+    public Instant getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(Instant updatedAt) { this.updatedAt = updatedAt; }
 }
