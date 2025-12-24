@@ -1,43 +1,31 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.DemandReading;
-import com.example.demo.service.DemandReadingService;
+import com.example.demo.dto.AuthRequest;
+import com.example.demo.dto.AuthResponse;
+import com.example.demo.entity.AppUser;
+import com.example.demo.service.AppUserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/api/demand-readings")
-public class DemandReadingController {
+@RequestMapping("/auth")
+public class AuthController {
     
-    private final DemandReadingService demandReadingService;
+    private final AppUserService appUserService;
     
-    public DemandReadingController(DemandReadingService demandReadingService) {
-        this.demandReadingService = demandReadingService;
+    public AuthController(AppUserService appUserService) {
+        this.appUserService = appUserService;
     }
 
-    @PostMapping
-    public ResponseEntity<DemandReading> createReading(@RequestBody DemandReading reading) {
-        DemandReading createdReading = demandReadingService.createReading(reading);
-        return ResponseEntity.ok(createdReading);
+    @PostMapping("/register")
+    public ResponseEntity<AppUser> register(@RequestBody AuthRequest request) {
+        AppUser user = appUserService.register(request.getEmail(), request.getPassword(), "USER");
+        return ResponseEntity.ok(user);
     }
 
-    @GetMapping("/zone/{zoneId}")
-    public ResponseEntity<List<DemandReading>> getReadingsForZone(@PathVariable Long zoneId) {
-        List<DemandReading> readings = demandReadingService.getReadingsForZone(zoneId);
-        return ResponseEntity.ok(readings);
-    }
-
-    @GetMapping("/zone/{zoneId}/latest")
-    public ResponseEntity<DemandReading> getLatestReading(@PathVariable Long zoneId) {
-        DemandReading reading = demandReadingService.getLatestReading(zoneId);
-        return ResponseEntity.ok(reading);
-    }
-
-    @GetMapping("/zone/{zoneId}/recent")
-    public ResponseEntity<List<DemandReading>> getRecentReadings(@PathVariable Long zoneId, @RequestParam int limit) {
-        List<DemandReading> readings = demandReadingService.getRecentReadings(zoneId, limit);
-        return ResponseEntity.ok(readings);
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
+        AuthResponse response = appUserService.login(request.getEmail(), request.getPassword());
+        return ResponseEntity.ok(response);
     }
 }
