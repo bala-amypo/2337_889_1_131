@@ -105,9 +105,6 @@
 							<value>false</value>
 						</property>
 					</properties>
-					<suiteXmlFiles>
-						<suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
-					</suiteXmlFiles>
 				</configuration>
 				<dependencies>
 					<dependency>
