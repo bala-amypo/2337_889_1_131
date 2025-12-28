@@ -1,52 +1,54 @@
 package com.example.demo.security;
 
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import io.jsonwebtoken.Claims;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collections;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    
-    private final JwtTokenProvider jwtTokenProvider;
-    
-    public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider) {
-        this.jwtTokenProvider = jwtTokenProvider;
+
+    private final JwtTokenProvider tokenProvider;
+    private final CustomUserDetailsService userDetailsService;
+
+    public JwtAuthenticationFilter(JwtTokenProvider tokenProvider, CustomUserDetailsService userDetailsService) {
+        this.tokenProvider = tokenProvider;
+        this.userDetailsService = userDetailsService;
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
-        
-        String token = getTokenFromRequest(request);
-        
-        if (token != null && jwtTokenProvider.validateToken(token)) {
-            String email = jwtTokenProvider.getEmailFromToken(token);
-            String role = jwtTokenProvider.getClaims(token).get("role", String.class);
-            
-            JwtAuthenticationToken authentication = new JwtAuthenticationToken(
-                    token, 
-                    email, 
-                    Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role))
-            );
-            
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
+        String token = getJwtFromRequest(request);
+
+        if (StringUtils.hasText(token) && tokenProvider.validateToken(token)) {
+            Claims claims = tokenProvider.getClaims(token);
+            String email = claims.getSubject();
+
+            var userDetails = userDetailsService.loadUserByUsername(email);
+            var auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+            SecurityContextHolder.getContext().setAuthentication(auth);
         }
-        
+
         filterChain.doFilter(request, response);
     }
-    
-    private String getTokenFromRequest(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
+
+    private String getJwtFromRequest(HttpServletRequest request) {
+        String bearer = request.getHeader("Authorization");
+        if (StringUtils.hasText(bearer) && bearer.startsWith("Bearer ")) {
+            return bearer.substring(7);
         }
         return null;
     }
