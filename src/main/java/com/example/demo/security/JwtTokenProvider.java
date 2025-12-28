@@ -4,35 +4,35 @@ import com.example.demo.entity.AppUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
+import java.security.Key;
 import java.util.Date;
 
 @Component
 public class JwtTokenProvider {
-
-    private final String JWT_SECRET = "mySecretKey12345"; // use env variable in prod
-    private final long JWT_EXPIRATION = 24 * 60 * 60 * 1000; // 1 day
+    
+    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private final long validityInMilliseconds = 3600000; // 1 hour
 
     public String createToken(AppUser user) {
-        Claims claims = Jwts.claims().setSubject(user.getEmail());
-        claims.put("role", user.getRole());
-        claims.put("userId", user.getId());
-
         Date now = new Date();
-        Date expiry = new Date(now.getTime() + JWT_EXPIRATION);
+        Date validity = new Date(now.getTime() + validityInMilliseconds);
 
         return Jwts.builder()
-                .setClaims(claims)
+                .setSubject(user.getEmail())
+                .claim("userId", user.getId())
+                .claim("role", user.getRole())
                 .setIssuedAt(now)
-                .setExpiration(expiry)
-                .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
+                .setExpiration(validity)
+                .signWith(key)
                 .compact();
     }
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(token);
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (Exception e) {
             return false;
@@ -40,6 +40,14 @@ public class JwtTokenProvider {
     }
 
     public Claims getClaims(String token) {
-        return Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(token).getBody();
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    public String getEmailFromToken(String token) {
+        return getClaims(token).getSubject();
     }
 }
